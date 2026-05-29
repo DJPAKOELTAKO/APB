@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>La Barbería Premium - Gestión de Clientes</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Outfit (headings) & Inter (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Outfit', 'sans-serif'],
+          },
+          colors: {
+            gold: {
+              50: '#fdfbf7',
+              100: '#fbf7ed',
+              200: '#f5ebce',
+              300: '#eddcb0',
+              400: '#dfbe74',
+              500: '#d2a038',
+              600: '#be872b',
+              700: '#9e6722',
+              800: '#7e4f1c',
+              900: '#643f18',
+              950: '#38200c'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-zinc-950 dark:text-zinc-50 font-sans transition-colors duration-300 min-h-screen">
+
+  <div id="app" class="min-h-screen flex flex-col">
+    
+    <!-- ==================== SCREEN 1: AUTHENTICATION ==================== -->
+    <div id="auth-screen" class="flex-1 flex items-center justify-center p-4 md:p-8 bg-gradient-to-tr from-slate-100 via-white to-gold-50 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950 min-h-screen">
+      <div class="w-full max-w-5xl bg-white dark:bg-zinc-900 rounded-3xl shadow-2xl border border-slate-200/50 dark:border-zinc-800/80 overflow-hidden grid md:grid-cols-2 min-h-[600px] transition-all-300">
+        
+        <!-- Left Side: Decorative Image & Branding (Hidden on mobile) -->
+        <div class="hidden md:flex flex-col justify-between p-12 bg-cover bg-center relative text-white" style="background-image: linear-gradient(to bottom, rgba(24, 24, 27, 0.4), rgba(9, 9, 11, 0.9)), url('https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&q=80&w=1200');">
+          <div class="flex items-center space-x-3">
+            <div class="p-2 bg-amber-500 rounded-xl text-zinc-950">
+              <i data-lucide="scissors" class="w-6 h-6"></i>
+            </div>
+            <span class="font-display font-extrabold text-2xl tracking-wider text-amber-500 uppercase">La Barbería</span>
+          </div>
+          
+          <div class="space-y-6">
+            <h2 class="text-4xl font-display font-bold leading-tight">
+              Estilo clásico, <br>
+              <span class="text-amber-500">técnicas modernas.</span>
+            </h2>
+            <p class="text-zinc-300 text-sm leading-relaxed max-w-sm">
+              Reserva tu cita al instante con nuestros barberos artesanos y vive una experiencia premium diseñada a tu medida.
+            </p>
+            <div class="flex items-center space-x-4 pt-4 text-xs text-zinc-400 border-t border-zinc-800">
+              <div class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-amber-500 mr-1"></i> 100% Personalizado</div>
+              <div class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-amber-500 mr-1"></i> WhatsApp de Recordatorio</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Side: Forms -->
+        <div class="p-8 md:p-12 flex flex-col justify-center relative">
+          
+          <!-- Absolute Header controls inside card (Theme Toggle) -->
+          <div class="absolute top-6 right-6">
+            <button id="theme-toggle-auth" class="p-2.5 bg-slate-100 hover:bg-slate-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-slate-600 dark:text-zinc-300 rounded-xl transition-all-300">
+              <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+              <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
+            </button>
+          </div>
+
+          <!-- Title Header Mobile Branding -->
+          <div class="flex md:hidden items-center space-x-2 mb-8 justify-center">
+            <div class="p-2 bg-amber-500 rounded-xl text-zinc-950">
+              <i data-lucide="scissors" class="w-5 h-5"></i>
+            </div>
+            <span class="font-display font-extrabold text-xl tracking-wider text-amber-500 uppercase">La Barbería</span>
+          </div>
+
+          <!-- LOGIN FORM -->
+          <div id="login-container" class="space-y-6">
+            <div class="space-y-2">
+              <h3 class="text-3xl font-display font-bold tracking-tight">Bienvenido de nuevo</h3>
+              <p class="text-sm text-slate-500 dark:text-zinc-400">Ingresa tus credenciales para acceder a tu panel de gestión.</p>
+            </div>
+
+            <form id="login-form" class="space-y-4">
+              <div>
+                <label for="login-email" class="block text-xs font-semibold uppercase tracking-wider mb-2 text-slate-600 dark:text-zinc-300">Correo Electrónico</label>
+                <div class="relative">
+                  <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
+                    <i data-lucide="mail" class="w-5 h-5"></i>
+                  </span>
+                  <input type="email" id="login-email" required class="w-full pl-11 pr-4 py-3 bg-slate-50 dark:bg-zinc-950 border border-slate-200 dark:border-zinc-800/80 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 dark:focus:ring-amber-500/30 transition-all-300" placeholder="tu@correo.com">
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between items-center mb-2">
+                  <label for="login-password" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-zinc-300">Contraseña</label>
+                  <a href="#" class="text-xs text-amber-600 hover:text-amber-500 dark:text-amber-500 dark:hover:text-amber-400 font-medium">¿Olvidaste tu contraseña?</a>
+                </div>
+                <div class="relative">
+                  <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
+                    <i data-lucide="lock" class="w-5 h-5"></i>
+                  </span>
+                  <input type="password" id="login-password" required class="w-full pl-11 pr-4 py-3 bg-slate-50 dark:bg-zinc-950 border border-slate-200 dark:border-zinc-800/80 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 dark:focus:ring-amber-500/30 transition-all-300" placeholder="••••••••">
+                </div>
+              </div>
+
+              <div class="flex items-center space-x-2 py-1">
+                <input type="checkbox" id="remember-me" class="rounded border-slate-300 dark:border-zinc-800 text-amber-500 focus:ring-amber-500 bg-slate-50 dark:bg-zinc-950 h-4 w-4">
+                <label for="remember-me" class="text-xs text-slate-500 dark:text-zinc-400">Recordar sesión en este dispositivo</label>
+              </div>
+
+              <button type="submit" class="w-full py-3.5 px-4 bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-amber-600 dark:hover:bg-amber-500 dark:text-zinc-950 font-semibold rounded-xl text-sm shadow-lg dark:shadow-amber-950/20 active:scale-[0.98] transition-all-300 flex items-center justify-center space-x-2">
+                <span>Iniciar Sesión</span>
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </button>
+            </form>
+
+            <div class="pt-2 text-center text-xs text-slate-500 dark:text-zinc-400">
+              ¿No tienes una cuenta? 
+              <button id="go-to-register" class="text-amber-600 hover:text-amber-500 dark:text-amber-500 dark:hover:text-amber-400 font-bold ml-1">Regístrate gratis</button>
+            </div>
+
+            <!-- Demo logins help -->
+            <div class="mt-6 p-4 bg-amber-500/10 border border-amber-500/20 rounded-xl space-y-2">
+              <span class="block text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider flex items-center">
+                <i data-lucide="info" class="w-4 h-4 mr-1"></i> Accesos Rápidos de Prueba
+              </span>
+              <div class="grid grid-cols-2 gap-2 text-xs">
+                <button onclick="document.getElementById('login-email').value='admin@barberia.com'; document.getElementById('login-password').value='123456';" class="p-2 text-left bg-white dark:bg-zinc-800 rounded-lg border border-slate-200 dark:border-zinc-700/60 hover:bg-slate-50 dark:hover:bg-zinc-700 transition-all-300">
+                  <span class="block font-bold text-slate-700 dark:text-zinc-300">👨‍💼 Vista Barbero/Admin</span>
+                  <span class="text-[10px] text-slate-500 dark:text-zinc-400">admin@barberia.com</span>
+                </button>
+                <button onclick="document.getElementById('login-email').value='juan.perez@email.com'; document.getElementById('login-password').value='123456';" class="p-2 text-left bg-white dark:bg-zinc-800 rounded-lg border border-slate-200 dark:border-zinc-700/60 hover:bg-slate-50 dark:hover:bg-zinc-700 transition-all-300">
+                  <span class="block font-bold text-slate-700 dark:text-zinc-300">🙋‍♂️ Vista Cliente</span>
+                  <span class="text-[10px] text-slate-500 dark:text-zinc-400">juan.perez@email.com</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- REGISTER FORM -->
+          <div id="register-container" class="space-y-6 hidden">
+            <div class="space-y-2">
+              <h3 class="text-3xl font-display font-bold tracking-tight">Crea tu cuenta</h3>
+              <p class="text-sm text-slate-500 dark:text-zinc-400">Únete a nuestro club de caballeros y agenda tu cita en segundos.</p>
+            </div>
+
+            <form id="register-form" class="space-y-4">
+              <div>
+                <label for="register-name" class="block text-xs font-semibold uppercase tracking-wider mb-2 text-slate-600 dark:text-zinc-300">Nombre Completo</label>
+                <div class="relative">
+                  <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
+                    <i data-lucide="user" class="w-5 h-5"></i>
+                  </span>
+                  <input type="text" id="register-name" required class="w-full pl-11 pr-4 py-3 bg-slate-50 dark:bg-zinc-950 border border-slate-200 dark:border-zinc-800/80 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 dark:focus:ring-amber-500/30 transition-all-300" placeholder="Ingresa tu nombre">
+                </div>
+              </div>
+
+              <div>
+                <label for="register-email" class="block text-xs font-semibold uppercase tracking-wider mb-2 text-slate-600 dark:text-zinc-300">Correo Electrónico</label>
+                <div class="relative">
+                  <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
+                    <i data-lucide="mail" class="w-5 h-5"></i>
+                  </span>
+                  <input type="email" id="register-email" required class="w-full pl-11 pr-4 py-3 bg-slate-50 dark:bg-zinc-950 border border-slate-200 dark:border-zinc-800/80 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 dark:focus:ring-amber-500/30 transition-all-300" placeholder="correo@ejemplo.com">
+                </div>
+              </div>
+
+              <div>
+                <label for="register-phone" class="block text-xs font-semibold uppercase tracking-wider mb-2 text-slate-600 dark:text-zinc-300">Teléfono (WhatsApp)</label>
+                <div class="relative">
+                  <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
+                    <i data-lucide="phone" class="w-5 h-5"></i>
+                  </span>
+                  <input type="tel" id="register-phone" required class="w-full pl-11 pr-4 py-3 bg-slate-50 dark:bg-zinc-950 border border-slate-200 dark:border-zinc-800/80 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 dark:focus:ring-amber-500/30 transition-all-300" placeholder="+34600111222">
+                </div>
+              </div>
+
+              <button type="submit" class="w-full py-3.5 px-4 bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-amber-600 dark:hover:bg-amber-500 dark:text-zinc-950 font-semibold rounded-xl text-sm shadow-lg dark:shadow-amber-950/20 active:scale-[0.98] transition-all-300 flex items-center justify-center space-x-2">
+                <span>Crear Cuenta & Acceder</span>
+                <i data-lucide="user-plus" class="w-4 h-4"></i>
+              </button>
+            </form>
+
+            <div class="pt-2 text-center text-xs text-slate-500 dark:text-zinc-400">
+              ¿Ya tienes una cuenta? 
+              <button id="go-to-login" class="text-amber-600 hover:text-amber-500 dark:text-amber-500 dark:hover:text-amber-400 font-bold ml-1">Inicia sesión aquí</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SCREEN 2: MAIN DASHBOARD ==================== -->
+    <div id="dashboard-screen" class="hidden flex-1 flex overflow-hidden h-screen relative bg-slate-50 dark:bg-zinc-950">
+      
+      <!-- Off-canvas Mobile Sidebar Backdrop -->
+      <div id="sidebar-backdrop" class="fixed inset-0 bg-zinc-950/60 dark:bg-zinc-950/80 z-20 hidden lg:hidden transition-opacity duration-300"></div>
+
+      <!-- Collapsible / Hamburger Sidebar -->
+      <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 w-72 bg-white dark:bg-zinc-900 border-r border-slate-200/50 dark:border-zinc-800/60 flex flex-col z-30 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
+        <!-- Logo Area -->
+        <div class="p-6 border-b border-slate-200/50 dark:border-zinc-800/60 flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            <div class="p-2 bg-amber-500 rounded-xl text-zinc-950">
+              <i data-lucide="scissors" class="w-5 h-5"></i>
+            </div>
+            <span class="font-display font-extrabold text-lg tracking-wider text-amber-500 uppercase">La Barbería</span>
+          </div>
+          <!-- Collapse Button for Mobile -->
+          <button id="close-sidebar" class="lg:hidden p-1 bg-slate-100 hover:bg-slate-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded-lg text-slate-500 dark:text-zinc-300 transition-all-300">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <!-- Current User Profile summary -->
+        <div class="p-6 border-b border-slate-200/50 dark:border-zinc-800/60 bg-gradient-to-br from-slate-50 to-white dark:from-zinc-900 dark:to-zinc-900/40">
+          <div class="flex items-center space-x-4">
+            <div class="w-12 h-12 bg-amber-500/20 text-amber-600 dark:text-amber-500 rounded-full flex items-center justify-center font-display font-bold text-lg border border-amber-500/30" id="user-avatar">
+              U
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="font-semibold text-sm truncate" id="user-display-name">Cargando...</p>
+              <span class="inline-flex items-center px-2 py-0.5 mt-1 rounded-full text-[10px] font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 uppercase tracking-wider" id="user-role-badge">
+                Cliente
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar Navigation Menu -->
+        <nav class="flex-1 p-4 space-y-1.5 overflow-y-auto no-scrollbar">
+          <button id="nav-btn-dashboard" class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all-300 bg-amber-500/10 dark:bg-amber-500/10 text-amber-600 dark:text-amber-500">
+            <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+            <span>Dashboard Principal</span>
+          </button>
+          
+          <button id="nav-btn-citas" class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all-300 text-slate-600 dark:text-zinc-400 hover:bg-slate-100 dark:hover:bg-zinc-800 hover:text-slate-800 dark:hover:text-zinc-100">
+            <i data-lucide="calendar" class="w-5 h-5"></i>
+            <span id="nav-text-citas">Mis Reservas</span>
+          </button>
+
+          <button id="nav-btn-profile" class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all-300 text-slate-600 dark:text-zinc-400 hover:bg-slate-100 dark:hover:bg-zinc-800 hover:text-slate-800 dark:hover:text-zinc-100">
+            <i data-lucide="user-cog" class="w-5 h-5"></i>
+            <span>Mis Datos</span>
+          </button>
+        </nav>
+
+        <!-- Sidebar Footer Action -->
+        <div class="p-4 border-t border-slate-200/50 dark:border-zinc-800/60">
+          <button id="logout-btn" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-semibold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/20 active:scale-[0.98] transition-all-300">
+            <i data-lucide="log-out" class="w-5 h-5"></i>
+            <span>Cerrar Sesión</span>
+          </button>
+        </div>
+      </aside>
+
+      <!-- Main Body Panel -->
+      <div class="flex-1 flex flex-col overflow-hidden">
+        
+        <!-- Header -->
+        <header class="h-20 bg-white dark:bg-zinc-900 border-b border-slate-200/50 dark:border-zinc-800/60 px-6 md:px-8 flex items-center justify-between z-10">
+          
+          <!-- Left side header -->
+          <div class="flex items-center space-x-4">
+            <!-- Mobile Sidebar Menu Button -->
+            <button id="open-sidebar" class="lg:hidden p-2 bg-slate-100 hover:bg-slate-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-slate-600 dark:text-zinc-300 rounded-xl transition-all-300">
+              <i data-lucide="menu" class="w-5 h-5"></i>
+            </button>
+            <h1 class="text-xl md:text-2xl font-display font-bold tracking-tight text-slate-800 dark:text-zinc-100" id="header-title">Panel de Control</h1>
+          </div>
+
+          <!-- Right side actions -->
+          <div class="flex items-center space-x-3 md:space-x-4">
+            
+            <!-- Quick Role Simulator Switcher -->
+            <button id="role-simulator-btn" class="hidden md:flex items-center space-x-1.5 px-3 py-2 bg-amber-500/10 hover:bg-amber-500/20 text-amber-700 dark:text-amber-400 border border-amber-500/30 hover:border-amber-500/40 rounded-xl text-xs font-bold transition-all-300" title="Haz clic para alternar de rol y ver el otro panel">
+              <i data-lucide="refresh-cw" class="w-3.5 h-3.5 animate-spin-slow"></i>
+              <span>Simular Rol</span>
+            </button>
+
+            <!-- Light/Dark Mode Toggle Button -->
+            <button id="theme-toggle-dashboard" class="p-2.5 bg-slate-100 hover:bg-slate-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-slate-600 dark:text-zinc-300 rounded-xl transition-all-300" title="Cambiar tema">
+              <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+              <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
+            </button>
+
+            <!-- Profile dropdown trigger button -->
+            <div class="w-10 h-10 bg-slate-100 dark:bg-zinc-800 border border-slate-200/50 dark:border-zinc-700 rounded-full flex items-center justify-center font-bold text-xs uppercase" id="header-user-avatar">
+              U
+            </div>
+
+          </div>
+        </header>
+
+        <!-- Main Dynamic Scrollable Content area -->
+        <main class="flex-1 overflow-y-auto p-6 md:p-8 no-scrollbar bg-slate-50 dark:bg-zinc-950 transition-all-300">
+          
+          <div id="main-content-loader" class="flex items-center justify-center h-64 hidden">
+            <div class="flex flex-col items-center space-y-4">
+              <div class="w-10 h-10 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
+              <p class="text-sm text-slate-500 dark:text-zinc-400 font-medium">Cargando módulo...</p>
+            </div>
+          </div>
+
+          <!-- Dynamic Target Container for JS views -->
+          <div id="dynamic-content" class="space-y-8 max-w-7xl mx-auto">
+            <!-- Loaded by dynamic JavaScript modules -->
+          </div>
+
+        </main>
+      </div>
+
+    </div>
+
+    <!-- ==================== DIALOGS & MODALS ==================== -->
+    
+    <!-- Toast notifications system -->
+    <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col space-y-3 pointer-events-none"></div>
+
+    <!-- WhatsApp simulated trigger modal -->
+    <div id="whatsapp-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/60 dark:bg-zinc-950/80 hidden">
+      <div class="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-3xl p-6 w-full max-w-md shadow-2xl transition-all-300 transform scale-95 opacity-0 duration-300" id="whatsapp-modal-card">
+        
+        <div class="flex items-start justify-between">
+          <div class="p-3 bg-emerald-500/10 text-emerald-600 dark:text-emerald-500 rounded-2xl">
+            <i data-lucide="message-square" class="w-6 h-6"></i>
+          </div>
+          <button id="close-wa-modal" class="p-1 hover:bg-slate-100 dark:hover:bg-zinc-800 rounded-lg text-slate-500 dark:text-zinc-400 transition-all-300">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <div class="mt-4 space-y-4">
+          <div class="space-y-1">
+            <h4 class="text-lg font-display font-bold">Enviar Recordatorio WhatsApp</h4>
+            <p class="text-xs text-slate-500 dark:text-zinc-400">Esta acción preparará la API de WhatsApp y abrirá un enlace con el recordatorio formateado.</p>
+          </div>
+
+          <div class="bg-slate-50 dark:bg-zinc-950 p-4 rounded-xl border border-slate-200 dark:border-zinc-800 text-xs font-mono break-words whitespace-pre-wrap dark:text-zinc-300 max-h-48 overflow-y-auto" id="wa-message-preview">
+            Cargando mensaje...
+          </div>
+
+          <div class="flex space-x-3 pt-2">
+            <button id="close-wa-modal-btn" class="flex-1 py-3 px-4 bg-slate-100 hover:bg-slate-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-slate-700 dark:text-zinc-300 font-semibold rounded-xl text-sm transition-all-300">
+              Cancelar
+            </button>
+            <a id="confirm-wa-btn" target="_blank" class="flex-1 py-3 px-4 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-xl text-sm transition-all-300 flex items-center justify-center space-x-2 shadow-lg shadow-emerald-600/10">
+              <i data-lucide="send" class="w-4 h-4"></i>
+              <span>Enviar WhatsApp</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Loading standard app scripts -->
+  <script src="js/services/mockService.js"></script>
+  <script src="js/views/admin-dashboard.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

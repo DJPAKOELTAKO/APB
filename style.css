@@ -1,0 +1,14 @@
+/* Smooth transitions for theme toggle and sidebar */
+.transition-all-300 {
+  transition: all 0.30s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hide scrollbars but keep functionality */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
