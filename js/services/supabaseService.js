@@ -9,11 +9,13 @@ class SupabaseService {
 
   // --- Initialize Supabase SDK ---
   initClient() {
-    // Attempt to load credentials from code or localStorage
-    const savedUrl = localStorage.getItem('supabase_url') || '';
-    const savedKey = localStorage.getItem('supabase_anon_key') || '';
+    // 1. Lee credenciales desde window.APP_CONFIG (js/config.js)
+    // 2. Fallback a localStorage para sobreescrituras manuales
+    const configUrl  = (window.APP_CONFIG && window.APP_CONFIG.SUPABASE_URL)      || '';
+    const configKey  = (window.APP_CONFIG && window.APP_CONFIG.SUPABASE_ANON_KEY) || '';
+    const savedUrl   = localStorage.getItem('supabase_url')      || configUrl;
+    const savedKey   = localStorage.getItem('supabase_anon_key') || configKey;
 
-    // Hardcode placeholder or use saved settings
     this.supabaseUrl = savedUrl;
     this.supabaseKey = savedKey;
 

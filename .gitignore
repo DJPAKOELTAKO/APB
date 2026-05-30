@@ -70,6 +70,9 @@ web_modules/
 .env.*
 !.env.example
 
+# Archivo de configuración local con credenciales (generado a partir de .env)
+js/config.js
+
 # parcel-bundler cache (https://parceljs.org/)
 .cache
 .parcel-cache
